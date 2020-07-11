@@ -12,10 +12,13 @@ class MainController extends AbstractController
     /**
      * @Route("/", name="index")
      */
-    public function index()
+    public function index(PostRepository $postRepository)
     {
+        $recent_posts = $postRepository->findByCreatedAt(5);
+        $post = $postRepository->findByCreatedAt(10);
         return $this->render('main/index.html.twig', [
-            'controller_name' => 'MainController',
+            'recentPosts' => $recent_posts,
+            'posts' => $post
         ]);
     }
 
@@ -53,8 +56,10 @@ class MainController extends AbstractController
 
 
         $posts = $postRepository->findAll();
+        $recent_posts = $postRepository->findByCreatedAt(5);
+
         // $posts = array($blog_post, $blog_post2);
-        return $this->render('main/blog.html.twig', ['posts' => $posts]);
+        return $this->render('main/blog.html.twig', ['posts' => $posts, 'recentPosts' => $recent_posts]);
     }
 
     /**
@@ -63,5 +68,15 @@ class MainController extends AbstractController
     public function contact()
     {
         return $this->render('main/contact.html.twig');
+    }
+
+    /**
+     * @Route("/post/{id}", name="post_detail")
+     */
+    public function postDetail(Post $post, PostRepository $postRepository)
+    {
+        $recent_posts = $postRepository->findByCreatedAt(5);
+
+        return $this->render('main/blog-detail.html.twig', ['post' => $post, 'recentPosts' => $recent_posts]);
     }
 }

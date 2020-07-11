@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Post;
 use App\Form\PostFormType;
+use App\Form\RegistrationFormType;
 use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @Route("dashboard", name="dashboard.")
@@ -101,5 +103,30 @@ class PostController extends AbstractController
         $em->remove($post);
         $em->flush();
         return $this->redirect($this->generateUrl('dashboard.posts'));
+    }
+
+    /**
+     * @Route("/profile", name="profile")
+     */
+    public function updateProfile(Request $request, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->get('plainPassword')->getData() !== '') {
+                $user->setPassword($passwordEncoder->encodePassword(
+                    $user,
+                    $form->get('plainPassword')->getData()
+                ));
+            }
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->redirect($this->generateUrl('dashboard.posts'));
+        }
+
+        return $this->render('post/profile.html.twig', ['profileForm' => $form->createView()]);
     }
 }
