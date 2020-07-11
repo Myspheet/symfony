@@ -1,0 +1,110 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+ <!-- Page Content -->
+   
+       <div class="heading-page header-text">
+      <section class="page-heading">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="text-content">
+                <h4> Welcome to the blog </h4>
+                <h2> Home </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="blog-posts mt-3">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8">
+            <div class="all-blog-posts">
+              <div class="row">
+              {% if posts %}
+                {% for post in posts  %}
+                   <div class="col-lg-12">
+                  <div class="blog-post">
+                    <div class="blog-thumb">
+                      <img src="uploads/{{ post.image }}" alt="">
+                    </div>
+                    <div class="down-content">
+                      <span>{{ post.category }}</span>
+                      <a href="{{ path('post_detail', {'id': post.id}) }}"><h4>{{ post.title }}</h4></a>
+                      <ul class="post-info">
+                        <li><a href="#">{{ post.getUser.fullname }}</a></li>
+                        <li><a href="#">{{ post.createdAt|date('Y-m-d') }}</a></li>
+                      </ul>
+                      <p>{{ post.body }}</p>
+                      <div class="post-options">
+                        <div class="row">
+                          <div class="col-6">
+                            <ul class="post-tags">
+                              <li><i class="fa fa-tags"></i></li>
+                               {% for tag in post.tags %}
+                              <li><a href="#">{{ tag }}</a>,</li>
+                              
+                              {% endfor %}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              {% endif %}
+                
+               
+                <div class="col-lg-12">
+                  <div class="main-button">
+                    <a href="{{ path('blog') }}">View All Posts</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="sidebar">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="sidebar-item search">
+                    <form id="search_form" name="gs" method="GET" action="#">
+                      <input type="text" name="q" class="searchText" placeholder="type to search..." autocomplete="on">
+                    </form>
+                  </div>
+                </div>
+                <div class="col-lg-12">
+                  <div class="sidebar-item recent-posts">
+                    <div class="sidebar-heading">
+                      <h2>Recent Posts</h2>
+                    </div>
+                    <div class="content">
+                      <ul>
+                      {% if recentPosts %}
+                        
+                      {% for post in recentPosts  %}
+                         <li><a href="#">
+                          <h5>{{ post.title }}</h5>
+                          <span>{{ post.createdAt|date("m/d/Y") }}</span>
+                        </a></li>
+                      {% endfor %}
+                      {% endif %}
+
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}

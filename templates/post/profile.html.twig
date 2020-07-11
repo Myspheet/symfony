@@ -1,0 +1,26 @@
+{% extends "dashboard.html.twig" %}
+
+{% block title %}
+  Profile
+{% endblock %}
+
+{% block bannerTitle %}
+  <h4>Profile</h4>
+  <h2> {{ app.user.fullname }} </h2>
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    {{ form_start(profileForm) }}
+        {{ form_row(profileForm.fullname) }}
+        {{ form_row(profileForm.email) }}
+        {{ form_row(profileForm.plainPassword, {
+            label: 'Password',
+            required : false
+        }) }}
+        {{ form_row(profileForm.agreeTerms) }}
+
+        <button type="submit" class="btn">Update Profile</button>
+    {{ form_end(profileForm) }}
+  </div>
+{% endblock %}
