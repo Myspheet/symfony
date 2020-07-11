@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Post;
+use App\Repository\PostRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,7 +30,7 @@ class MainController extends AbstractController
     /**
      * @Route("/blog", name="blog")
      */
-    public function blog()
+    public function blog(PostRepository $postRepository)
     {
         $blog_post = [
             'category' => 'LIFESTYLE',
@@ -48,7 +50,10 @@ class MainController extends AbstractController
             'body' => 'Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.',
             'tags' => array('best', 'post'),
         ];
-        $posts = array($blog_post, $blog_post2);
+
+
+        $posts = $postRepository->findAll();
+        // $posts = array($blog_post, $blog_post2);
         return $this->render('main/blog.html.twig', ['posts' => $posts]);
     }
 

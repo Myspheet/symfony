@@ -1,0 +1,25 @@
+{% extends "dashboard.html.twig" %}
+
+{% block title %}
+  Create Post
+{% endblock %}
+
+  {% block bannerTitle %} <h2>Create Post </h2> {% endblock %}
+
+
+{% block body %}
+
+<div class="container pt-3">
+{{ form_start(editForm) }}
+        {{ form_row(editForm.title) }}
+        {{ form_row(editForm.slug) }}
+        {{ form_row(editForm.body) }}
+        {{ form_row(editForm.category) }}
+        {{ form_row(editForm.tags) }}
+        {{ form_row(editForm.image, {'required': false}) }}
+
+        <button type="submit" class="btn">Update</button>
+    {{ form_end(editForm) }}
+  
+</div>
+{% endblock %}
